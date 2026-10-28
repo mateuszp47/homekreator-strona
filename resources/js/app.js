@@ -27,3 +27,9 @@ document.querySelector('[data-contact-submit]')?.form?.addEventListener('submit'
  const button=event.target.querySelector('[data-contact-submit]');button.disabled=true;button.textContent='Przesyłanie zapytania…';
 });
 window.addEventListener('pageshow',()=>{const button=document.querySelector('[data-contact-submit]');if(button){button.disabled=false;button.innerHTML='Wyślij zapytanie <span aria-hidden="true">→</span>';}});
+
+// Keep the chevron and aria-expanded in sync for pointer and keyboard users.
+function setOfferOpen(open){dropdownButton?.setAttribute('aria-expanded',String(open));offerNav?.classList.toggle('open',open);}
+offerNav?.addEventListener('pointerenter',()=>{if(matchMedia('(hover: hover) and (min-width: 901px)').matches)setOfferOpen(true);});
+offerNav?.addEventListener('pointerleave',()=>{if(matchMedia('(hover: hover) and (min-width: 901px)').matches&&!offerNav.matches(':focus-within'))setOfferOpen(false);});
+offerNav?.addEventListener('focusout',event=>{if(!offerNav.contains(event.relatedTarget)&&!offerNav.matches(':hover'))setOfferOpen(false);});

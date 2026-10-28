@@ -4,6 +4,10 @@ return [
  'secondary_phone' => '+48 577 300 588', 'company' => 'ZIG ZAG BUD',
  'address' => 'ul. Słomiana 18, 26-500 Szydłowiec',
  'contact_enabled' => env('CONTACT_FORM_ENABLED', false), 'contact_recipient' => env('CONTACT_RECIPIENT'),
+ 'socials' => [
+  ['name'=>'Instagram','icon'=>'instagram','url'=>'https://www.instagram.com/zigzagpolska/'],
+  ['name'=>'TikTok','icon'=>'tiktok','url'=>'https://www.tiktok.com/@zigzag9278'],
+ ],
  'categories' => [
   'domki' => ['slug'=>'domki-modulowe','name'=>'Domki modułowe','image'=>'domek.jpeg','description'=>'Twoje miejsce na działce. Moduły do wypoczynku z możliwością wyposażenia wnętrza.'],
   'sanitarne' => ['slug'=>'pawilony-sanitarne','name'=>'Pawilony sanitarne','image'=>'sanitarny.jpeg','description'=>'Funkcjonalne zaplecze sanitarne z instalacjami przygotowanymi do podłączenia.'],

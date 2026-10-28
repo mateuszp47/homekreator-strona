@@ -19,7 +19,7 @@
  <button class="menu-toggle" aria-expanded="false" aria-controls="navigation" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
  <nav id="navigation" aria-label="Nawigacja główna">
   <a href="{{ route('home') }}" @if(request()->routeIs('home')) aria-current="page" @endif>Strona główna</a>
-  <div class="offer-nav"><div class="offer-nav-title"><a href="{{ route('offer') }}" @if(request()->routeIs('offer','product')) aria-current="page" @endif>Oferta</a><button aria-expanded="false" aria-controls="offer-dropdown" aria-label="Rozwiń kategorie oferty">⌄</button></div>
+  <div class="offer-nav"><div class="offer-nav-title"><a href="{{ route('offer') }}" @if(request()->routeIs('offer','product')) aria-current="page" @endif>Oferta</a><button aria-expanded="false" aria-controls="offer-dropdown" aria-label="Rozwiń kategorie oferty"><svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div>
    <div class="offer-dropdown" id="offer-dropdown"><a href="{{ route('offer') }}">Wszystkie produkty</a>@foreach($catalog->categories() as $category)<a href="{{ route('offer', $category['slug']) }}">{{ $category['name'] }}</a>@endforeach</div>
   </div>
   <a href="{{ route('projects') }}" @if(request()->routeIs('projects','project')) aria-current="page" @endif>Realizacje</a>
@@ -31,7 +31,7 @@
 </div></header>
 <main id="main">@yield('content')</main>
 <footer class="site-footer"><div class="container footer-grid">
- <div><a class="logo footer-logo" href="{{ route('home') }}">home<strong>kreator</strong></a><p>Gotowe moduły.<br>Przestrzeń dla Twoich pomysłów.</p><a class="footer-phone" href="tel:+48730204633">730 204 633</a></div>
+ <div><a class="logo footer-logo" href="{{ route('home') }}">home<strong>kreator</strong></a><p>Gotowe moduły.<br>Przestrzeń dla Twoich pomysłów.</p><a class="footer-phone" href="tel:+48730204633">730 204 633</a><div class="footer-socials" aria-label="Media społecznościowe">@foreach(config('homekreator.socials') as $social)<a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="Home Kreator — {{ $social['name'] }} (otwiera nową kartę)"><x-icon :name="$social['icon']"/><span>{{ $social['name'] }}</span><span aria-hidden="true">↗</span></a>@endforeach</div></div>
  <div><h2>Nasza oferta</h2>@foreach($catalog->categories() as $category)<a href="{{ route('offer',$category['slug']) }}">{{ $category['name'] }}</a>@endforeach</div>
  <div><h2>Warto wiedzieć</h2><a href="{{ route('projects') }}">Realizacje</a><a href="{{ route('delivery') }}">Transport i montaż</a><a href="{{ route('about') }}">O nas</a><a href="{{ route('contact') }}">Kontakt</a><a href="{{ route('privacy') }}">Polityka prywatności</a></div>
  <div><h2>Dane firmy</h2><p>ZIG ZAG BUD<br>ul. Słomiana 18<br>26-500 Szydłowiec</p><a href="tel:+48577300588">+48 577 300 588</a><a href="https://www.google.com/maps/search/?api=1&query=S%C5%82omiana+18+Szyd%C5%82owiec" target="_blank" rel="noopener">Wyznacz trasę ↗</a></div>

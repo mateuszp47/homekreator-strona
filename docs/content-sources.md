@@ -24,7 +24,7 @@ Kod napisano od podstaw. Nie otrzymano prywatnego kodu źródłowego ani backend
 5. Sekcja sauny powtarza parametry i wyposażenie domku, włącznie z kuchnią i łazienką. Sauna ma zatem wycenę indywidualną, bez tych parametrów.
 6. W starym kodzie są błędne odsyłacze telefoniczne, w tym 577 400 588. Nowa strona używa dwóch numerów z widocznej sekcji kontaktowej, z poprawnym schematem tel:.
 7. Nie znaleziono adresu e-mail, NIP, godzin pracy ani potwierdzonych profili społecznościowych. Nie dodano zmyślonych danych.
-8. Opinie mają pozostałości szablonu, m.in. „Add Your Heading Text Here” i ocenę z 3614 recenzji bez wiarygodnego odnośnika. Nie przeniesiono ocen ani opinii.
+8. Opinie mają pozostałości szablonu, m.in. „Add Your Heading Text Here” i ocenę z 3614 recenzji bez wiarygodnego odnośnika. Na prośbę właściciela przeniesiono pięć wypowiedzi z autorami i miejscowościami do config/reviews.php. Nie przeniesiono zbiorczej oceny, liczby recenzji ani deklaracji weryfikacji.
 9. Zdjęcia przedstawiają przykładowe konfiguracje ze starej witryny; powiązanie zdjęć z konkretnymi wariantami trzeba potwierdzić.
 10. Formularz Laravel ma walidację, CSRF, limit żądań, honeypot i obsługę SMTP. Formularz zapisuje zgłoszenia w bazie i panelu Wiadomości. Opcjonalne powiadomienia e-mail są wyłączone do czasu ustawienia CONTACT_FORM_ENABLED, CONTACT_RECIPIENT i poprawnego transportu poczty. Nie potwierdzono firmowego adresu e-mail.
 11. Wymagania administracyjne dla ustawienia modułu trzeba ocenić indywidualnie; nie przeniesiono ogólnej obietnicy „bez pozwolenia”.
@@ -49,3 +49,7 @@ Laravel 13, Blade i Vite. Wygląd zbliżony do referencji: ciemnozielone CTA, bi
 ## Panel treści
 
 Produkty i realizacje są przechowywane w bazie danych i zarządzane pod /admin. Pliki JSON stanowią wyłącznie dane startowe. Import zachowuje edycje i wpisy archiwalne, także po zmianie adresu URL. Konta administratorów tworzy się poleceniem admin:create, bez domyślnych haseł.
+
+## Media społecznościowe
+
+Linki odczytane bezpośrednio z HTML aktualnej homekreator.com: Instagram @zigzagpolska i TikTok @zigzag9278. Usunięto parametry śledzące z URL. Adresy są w config/homekreator.php.
