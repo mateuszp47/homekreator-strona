@@ -26,7 +26,7 @@ Kod napisano od podstaw. Nie otrzymano prywatnego kodu źródłowego ani backend
 7. Nie znaleziono adresu e-mail, NIP, godzin pracy ani potwierdzonych profili społecznościowych. Nie dodano zmyślonych danych.
 8. Opinie mają pozostałości szablonu, m.in. „Add Your Heading Text Here” i ocenę z 3614 recenzji bez wiarygodnego odnośnika. Nie przeniesiono ocen ani opinii.
 9. Zdjęcia przedstawiają przykładowe konfiguracje ze starej witryny; powiązanie zdjęć z konkretnymi wariantami trzeba potwierdzić.
-10. Formularz nie wysyła danych: przygotowuje tekst do skopiowania. Do wysyłki potrzebny jest potwierdzony odbiorca i konfiguracja serwera/usługi pocztowej.
+10. Formularz Laravel ma walidację, CSRF, limit żądań, honeypot i obsługę SMTP. Wysyłka jest wyłączona do czasu ustawienia CONTACT_FORM_ENABLED, CONTACT_RECIPIENT i poprawnego transportu poczty. Nie potwierdzono firmowego adresu e-mail.
 11. Wymagania administracyjne dla ustawienia modułu trzeba ocenić indywidualnie; nie przeniesiono ogólnej obietnicy „bez pozwolenia”.
 
 ## Zdjęcia źródłowe
@@ -41,3 +41,7 @@ Nazwy lokalne odpowiadają URL-om starej strony:
 - sanitarny.jpeg: /wp-content/uploads/2026/04/WhatsApp-Image-2026-02-10-at-18.21.52-10.jpeg
 - sauna.webp: /wp-content/uploads/2026/04/20260318_171319-scaled-e1777220669681.webp
 - gastronomia.jpg: /wp-content/uploads/2025/03/s-l1200.jpg
+
+## Nowa implementacja Laravel
+
+Laravel 13, Blade i Vite. Wygląd zbliżony do referencji: czerwone CTA, biały nagłówek, szare sekcje, rozwijane menu kategorii, katalog z boczną nawigacją oraz karty produktów i realizacji. Dane i zdjęcia pochodzą z Home Kreator, nie z katalogów stron referencyjnych.

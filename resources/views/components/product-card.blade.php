@@ -1,0 +1,4 @@
+@props(['product'])
+<article class="product-card"><a class="product-photo" href="{{ route('product',$product['slug']) }}"><img src="{{ asset('images/'.$product['image']) }}" alt="{{ $product['name'] }}" width="800" height="540" loading="lazy"><span class="badge">{{ $product['label'] }}</span></a>
+<div class="product-card-body"><p class="model">HOME KREATOR</p><h3><a href="{{ route('product',$product['slug']) }}">{{ $product['name'] }}</a></h3><p class="dimensions">Wymiary: <strong>{{ $product['size'] }}</strong></p>
+<div class="product-card-bottom"><div class="price">@if($product['price'])<small>od</small> {{ number_format($product['price'],0,',',' ') }} zł <small>netto</small>@else<span class="individual-price">Wycena indywidualna</span>@endif</div><a class="btn btn-outline" href="{{ route('product',$product['slug']) }}">Zobacz więcej <x-icon/></a></div></div></article>

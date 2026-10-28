@@ -1,0 +1,2 @@
+@props(['project'])
+<article class="project-card"><a href="{{ route('project',$project['slug']) }}"><img src="{{ asset('images/'.$project['image']) }}" alt="{{ $project['name'] }}" width="800" height="540" loading="lazy"></a><div><p class="model">{{ config('homekreator.categories.'.$project['category'].'.name') }}</p><h3><a href="{{ route('project',$project['slug']) }}">{{ $project['name'] }}</a></h3><a class="text-link" href="{{ route('project',$project['slug']) }}">Zobacz realizację <x-icon/></a></div></article>

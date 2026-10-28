@@ -1,0 +1,19 @@
+@extends('layouts.app')
+@section('title','Kontakt')
+@section('content')
+<x-page-heading title="Porozmawiajmy o Twoim projekcie" subtitle="Chcesz poznać cenę, wybrać wyposażenie lub omówić transport? Skontaktuj się z nami."/>
+<section class="section"><div class="container contact-grid"><div class="contact-info"><span class="eyebrow">HOME KREATOR</span><h2>Jesteśmy do Twojej dyspozycji.</h2><p>Podaj przeznaczenie modułu, wymiary i miejscowość dostawy. Wspólnie dobierzemy odpowiednie rozwiązanie.</p><a class="contact-phone" href="tel:+48730204633"><x-icon name="phone"/>730 204 633</a><a class="second-phone" href="tel:+48577300588">Drugi numer: +48 577 300 588</a><div class="address-card"><h3>Dane firmy</h3><p>ZIG ZAG BUD<br>ul. Słomiana 18<br>26-500 Szydłowiec</p><a class="text-link" href="https://www.google.com/maps/search/?api=1&query=S%C5%82omiana+18+Szyd%C5%82owiec" target="_blank" rel="noopener">Wyznacz trasę <x-icon/></a></div><img src="{{ asset('images/domek.jpeg') }}" alt="Domek Home Kreator z tarasem" width="800" height="540"></div>
+<div class="contact-panel"><h2>Zapytaj o swój moduł</h2><p>Wybierz model i opisz, czego potrzebujesz.</p>
+@if(session('success'))<div class="notice success" role="status">{{ session('success') }}</div>@endif
+@if($errors->any())<div class="notice error" role="alert"><strong>Sprawdź formularz.</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+@if(!$contactAvailable)<div class="notice"><strong>Zapraszamy do kontaktu telefonicznego.</strong><p>Wysyłka formularza nie jest obecnie dostępna. Zadzwoń pod <a href="tel:+48730204633">730 204 633</a> — omówimy Twój projekt.</p></div>@endif
+<form method="post" action="{{ route('contact.send') }}">@csrf
+<div class="form-row"><label>Imię i nazwisko <span>*</span><input name="name" autocomplete="name" value="{{ old('name') }}" required maxlength="100" @error('name') aria-invalid="true" @enderror></label><label>Adres e-mail <span>*</span><input type="email" name="email" autocomplete="email" value="{{ old('email') }}" required maxlength="254" @error('email') aria-invalid="true" @enderror></label></div>
+<div class="form-row"><label>Numer telefonu<input type="tel" name="phone" autocomplete="tel" value="{{ old('phone') }}" maxlength="30"></label><label>Miejscowość dostawy <span>*</span><input name="city" autocomplete="address-level2" value="{{ old('city') }}" required maxlength="150" @error('city') aria-invalid="true" @enderror></label></div>
+<label>Interesujący model<select name="model"><option value="">Projekt indywidualny / potrzebuję porady</option>@foreach($products as $product)<option value="{{ $product['slug'] }}" @selected(old('model',$model)===$product['slug'])>{{ $product['name'] }}</option>@endforeach</select></label>
+<label>Twoja wiadomość <span>*</span><textarea name="message" rows="5" minlength="10" maxlength="5000" required placeholder="Napisz o przeznaczeniu, wymiarach i wyposażeniu modułu…" @error('message') aria-invalid="true" @enderror>{{ old('message') }}</textarea></label>
+<div class="honeypot" aria-hidden="true"><label>Strona internetowa<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<label class="checkbox-label"><input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))><span>Zapoznałem/am się z <a href="{{ route('privacy') }}">polityką prywatności</a> i informacją o przetwarzaniu danych w celu odpowiedzi na zapytanie. *</span></label>
+<button class="btn btn-red" type="submit" @disabled(!$contactAvailable)>Wyślij zapytanie <x-icon/></button>
+</form></div></div></section>
+@endsection

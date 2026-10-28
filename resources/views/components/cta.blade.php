@@ -1,0 +1,1 @@
+<section class="cta-band"><div class="container"><div><span>MASZ POMYSŁ NA WŁASNĄ PRZESTRZEŃ?</span><h2>Porozmawiajmy o Twoim module.</h2><p>Pomożemy dobrać wymiary, wyposażenie i ustalić warunki dostawy.</p></div><a class="btn btn-white" href="tel:+48730204633"><x-icon name="phone"/>730 204 633</a></div></section>

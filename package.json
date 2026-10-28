@@ -1,1 +1,1 @@
-{"name":"homekreator-strona","version":"1.0.0","private":true,"description":"Strona Home Kreator — katalog domków i pawilonów modułowych","scripts":{"build":"python3 scripts/build.py","dev":"python3 scripts/serve.py","check":"python3 scripts/check.py"}}
+{"name":"homekreator-strona","private":true,"type":"module","scripts":{"build":"vite build","dev":"vite"},"devDependencies":{"concurrently":"^10.0.6","laravel-vite-plugin":"^3.1","vite":"^8.0.0"}}
