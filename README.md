@@ -146,3 +146,9 @@ Lokalnie uruchamiaj **`php artisan site:serve`** — ustawia limity PHP dla wię
 Po tej aktualizacji wykonaj w folderze projektu `composer install`, `php artisan migrate` i `npm run build`. Twoje istniejące produkty i zdjęcia nie są nadpisywane. Jeśli Composer zgłosi brak GD, włącz to rozszerzenie w swojej instalacji PHP.
 
 Wdrożenie, limity hostingu, harmonogram kopii i przywracanie: **[docs/hosting-i-backup.md](docs/hosting-i-backup.md)**.
+
+## Trwałe usuwanie wpisów
+
+W zakładce Archiwum produktów i realizacji jest przycisk „Usuń trwale”. Prowadzi do osobnej strony potwierdzenia. Usunięcie wymaga zaznaczenia pola potwierdzenia i jest blokowane po stronie serwera dla aktywnych oraz przywróconych wpisów. Powiązane realizacje pozostają po usunięciu produktu, ale tracą jego powiązanie. Pliki zdjęć pozostają ze względu na współdzielenie między wpisami. Import danych początkowych nie odtwarza wpisów trwale usuniętych z panelu. Wcześniejsze kopie zapasowe mogą nadal zawierać usunięte dane.
+
+Po pobraniu tej aktualizacji wykonaj `php artisan migrate` oraz `npm run build`.

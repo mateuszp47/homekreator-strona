@@ -51,4 +51,18 @@ class ContentController extends Controller {
  }
  public function destroy(string $kind,int $id) {$this->model($kind)::findOrFail($id)->delete();return to_route('admin.content.index',$kind)->with('success','Przeniesiono do archiwum. Wpis możesz przywrócić.');}
  public function restore(string $kind,int $id) {$item=$this->model($kind)::onlyTrashed()->findOrFail($id);$item->is_published=false;$item->restore();return to_route('admin.content.edit',[$kind,$id])->with('success','Przywrócono jako szkic. Sprawdź treść i zaznacz publikację.');}
+
+ public function confirmDelete(string $kind,int $id) {
+  $item=$this->model($kind)::onlyTrashed()->findOrFail($id);
+  return view('admin.confirm-delete',compact('item','kind'));
+ }
+ public function forceDelete(Request $request,string $kind,int $id) {
+  $request->validate(['confirmation'=>['required','accepted']]);
+  DB::transaction(function()use($kind,$id){
+   $item=$this->model($kind)::onlyTrashed()->lockForUpdate()->findOrFail($id);
+   if($item->source_key)DB::table('content_deletions')->insertOrIgnore(['kind'=>$kind,'source_key'=>$item->source_key,'created_at'=>now(),'updated_at'=>now()]);
+   $item->forceDelete();
+  });
+  return to_route('admin.content.index',[$kind,'archiwum'=>1])->with('success','Wpis został trwale usunięty.');
+ }
 }

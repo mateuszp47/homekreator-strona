@@ -29,6 +29,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth',EnsureAdmin::class])-
   Route::get('/{id}/edytuj',[ContentController::class,'edit'])->whereNumber('id')->name('edit');
   Route::put('/{id}',[ContentController::class,'update'])->whereNumber('id')->name('update');
   Route::delete('/{id}',[ContentController::class,'destroy'])->whereNumber('id')->name('destroy');
+  Route::get('/{id}/usun-trwale',[ContentController::class,'confirmDelete'])->whereNumber('id')->name('confirm-delete');
+  Route::delete('/{id}/usun-trwale',[ContentController::class,'forceDelete'])->whereNumber('id')->name('force-delete');
   Route::post('/{id}/przywroc',[ContentController::class,'restore'])->whereNumber('id')->name('restore');
  });
 });
