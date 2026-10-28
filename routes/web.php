@@ -24,3 +24,5 @@ Route::get('/{legacy}.html',function(string $legacy,Catalog $catalog){
  if($catalog->products()->contains('slug',$legacy)) return redirect()->route('product',$legacy,301);
  abort(404);
 });
+
+require __DIR__.'/admin.php';

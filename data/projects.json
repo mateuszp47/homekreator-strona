@@ -1,0 +1,50 @@
+[
+    {
+        "slug": "domek-z-tarasem",
+        "name": "Domek modułowy z tarasem",
+        "image": "domek.jpeg",
+        "gallery": [
+            "domek.jpeg",
+            "wnetrze.jpeg",
+            "wnetrze-2.jpeg",
+            "gabinet.jpeg"
+        ],
+        "category": "domki",
+        "product": "domek-modulowy-6x3",
+        "description": "Przeszklony moduł z zadaszonym tarasem, aneksem kuchennym i łazienką. Zobacz przykładowe wykończenie oraz połączenie wnętrza z przestrzenią wypoczynkową."
+    },
+    {
+        "slug": "pawilon-sanitarny-wc",
+        "name": "Pawilon sanitarny z dwiema toaletami",
+        "image": "sanitarny.jpeg",
+        "gallery": [
+            "sanitarny.jpeg"
+        ],
+        "category": "sanitarne",
+        "product": "pawilon-sanitarny",
+        "description": "Przykład kompaktowego zaplecza sanitarnego. Moduł z dwoma WC i pisuarem, przygotowany do podłączenia instalacji na miejscu."
+    },
+    {
+        "slug": "sauna-w-ogrodzie",
+        "name": "Nowoczesna sauna ogrodowa",
+        "image": "sauna.webp",
+        "gallery": [
+            "sauna.webp"
+        ],
+        "category": "sauny",
+        "product": "sauna-ogrodowa",
+        "description": "Sauna z dużym frontowym przeszkleniem. Przykładowa realizacja pokazuje połączenie drewnianego wnętrza z nowoczesną formą."
+    },
+    {
+        "slug": "przestrzen-do-pracy",
+        "name": "Moduł jako miejsce do pracy",
+        "image": "biuro.jpeg",
+        "gallery": [
+            "biuro.jpeg",
+            "wnetrze-2.jpeg"
+        ],
+        "category": "biznes",
+        "product": "biuro-modulowe",
+        "description": "Jasne wnętrze modułu do wykorzystania jako biuro. Wykończenie i układ można dostosować do planowanego sposobu pracy."
+    }
+]

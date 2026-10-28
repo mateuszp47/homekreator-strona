@@ -1,0 +1,3 @@
+@extends('admin.layout')
+@section('title','Logowanie')
+@section('content')<div class="admin-login"><span class="eyebrow">HOME KREATOR</span><h1>Zaloguj się do panelu</h1><p>Zarządzaj produktami i realizacjami.</p><form method="post" action="{{ route('admin.login') }}">@csrf<label>Adres e-mail<input name="email" type="email" value="{{ old('email') }}" autocomplete="username" required autofocus></label><label>Hasło<input name="password" type="password" autocomplete="current-password" required></label><button class="btn btn-primary">Zaloguj się</button></form><p class="price-note">Konto administratora tworzy właściciel aplikacji poleceniem <code>php artisan admin:create</code>.</p></div>@endsection

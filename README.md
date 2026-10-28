@@ -1,6 +1,6 @@
 # Home Kreator — Laravel
 
-Strona Home Kreator zbudowana od nowa w **Laravel 13 + Blade + Vite**. Wygląd nawiązuje do olaya.pl i walbud24.pl: biały nagłówek, czerwone przyciski, jasnoszare sekcje, rozwijana oferta i katalog produktów.
+Strona Home Kreator zbudowana od nowa w **Laravel 13 + Blade + Vite**. Wygląd nawiązuje do olaya.pl i walbud24.pl: biały nagłówek, ciemnozielone przyciski, jasnoszare sekcje, rozwijana oferta i katalog produktów.
 
 ## Wymagania
 
@@ -16,14 +16,17 @@ Jeśli nie masz narzędzi: `brew install php composer node`.
 git clone https://github.com/mateuszp47/homekreator-strona.git
 cd homekreator-strona
 composer install
-cp .env.example .env
+test -f .env || cp .env.example .env
 php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+php artisan storage:link
 npm install
 npm run build
 php artisan serve
 ```
 
-Otwórz **http://127.0.0.1:8000**. Nie potrzeba Pythona ani konfiguracji bazy danych dla obecnej oferty — sesje i cache działają na plikach.
+Otwórz **http://127.0.0.1:8000**. Aplikacja używa lokalnej bazy SQLite. Polecenie migrate --seed przenosi początkową ofertę i realizacje do bazy. Sesje i cache działają na plikach.
 
 Jeśli masz już poprzednią wersję repozytorium, wejdź do jego folderu i wykonaj `git pull origin main`, a następnie powyższe kroki od `composer install`. Przed aktualizacją zachowaj własne niezapisane zmiany.
 
@@ -49,9 +52,10 @@ Albo w dwóch terminalach: `php artisan serve` oraz `npm run dev`. Zatrzymanie s
 
 ## Edycja treści
 
-- `data/products.json` — produkty, opisy, wymiary, ceny i wyposażenie.
+- Panel `/admin` — produkty, realizacje, opisy, ceny, publikacja i zdjęcia.
+- `data/products.json` i `data/projects.json` — dane początkowe importowane przy seedowaniu. Późniejsze edycje są przechowywane w bazie.
 - `config/homekreator.php` — kategorie, FAQ i dane kontaktowe.
-- `app/Support/Catalog.php` — odczyt oferty oraz dane realizacji.
+- `app/Support/Catalog.php` — publiczny odczyt opublikowanych wpisów z bazy.
 - `resources/views/` — widoki Blade.
 - `resources/css/app.css` — wygląd.
 - `resources/js/app.js` — menu i galerie.
@@ -91,3 +95,34 @@ Testy obejmują strony, filtrowanie, sortowanie, 404, przekierowania, sitemapę,
 To aplikacja PHP. Katalogiem publicznym serwera musi być **`public/`**, nie katalog główny repozytorium. Wdróż źródła, wykonaj `composer install --no-dev --optimize-autoloader`, `npm ci && npm run build`, skonfiguruj `.env`, klucz aplikacji i prawa zapisu do `storage/` oraz `bootstrap/cache/`. Ustaw `APP_ENV=production`, `APP_DEBUG=false` i prawidłowy `APP_URL`.
 
 Poprzedni podgląd ChatGPT Sites przedstawia starą wersję statyczną. Nie obsługuje wykonania PHP i nie jest wdrożeniem tego projektu Laravel. Domena homekreator.com nie została zmieniona.
+
+
+## Panel administracyjny
+
+Po aktualizacji istniejącego projektu uruchom:
+
+```bash
+php artisan migrate --seed
+php artisan storage:link
+npm install
+npm run build
+php artisan admin:create
+```
+
+Jeśli SQLite zgłosi brak pliku, utwórz go poleceniem `touch database/database.sqlite`. Nie usuwaj istniejącej bazy. Przy innym silniku ustaw jego parametry w `.env`.
+
+`admin:create` zapyta o nazwę, e-mail i hasło (min. 12 znaków, wpisywane niewidocznie). **Nie ma konta z domyślnym hasłem ani publicznej rejestracji.** Zaloguj się pod **http://127.0.0.1:8000/admin**.
+
+Panel obsługuje:
+
+- dodawanie i edytowanie produktów oraz realizacji;
+- nazwy, adresy URL, opisy i wybór kategorii;
+- wymiary, ceny netto i wyposażenie produktów;
+- powiązanie realizacji z produktem;
+- zdjęcie główne, galerię i usuwanie zdjęć z galerii;
+- szkice, publikację i kolejność wyświetlania;
+- archiwizowanie i przywracanie wpisów jako szkiców.
+
+Zdjęcia: JPG/PNG/WebP, maks. 8 MB i 6000 × 6000 px na plik, do 15 nowych zdjęć galerii naraz. Ustaw limity PHP `upload_max_filesize` i `post_max_size` odpowiednio do wielkości całego formularza. Wgrane pliki trafiają do `storage/app/public/catalog`, a `storage:link` udostępnia je przez `public/storage`. Pliki usunięte z galerii pozostają w magazynie, aby nie uszkodzić innych wpisów i umożliwić odzyskiwanie treści.
+
+Ponowne `db:seed` nie nadpisuje edycji ani archiwalnych wpisów. Twórz kopie zapasowe **bazy danych oraz storage/app/public** — te treści nie są zapisywane w Git. Na produkcji używaj HTTPS oraz `APP_DEBUG=false`.

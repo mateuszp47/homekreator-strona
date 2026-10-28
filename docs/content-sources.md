@@ -44,4 +44,8 @@ Nazwy lokalne odpowiadają URL-om starej strony:
 
 ## Nowa implementacja Laravel
 
-Laravel 13, Blade i Vite. Wygląd zbliżony do referencji: czerwone CTA, biały nagłówek, szare sekcje, rozwijane menu kategorii, katalog z boczną nawigacją oraz karty produktów i realizacji. Dane i zdjęcia pochodzą z Home Kreator, nie z katalogów stron referencyjnych.
+Laravel 13, Blade i Vite. Wygląd zbliżony do referencji: ciemnozielone CTA, biały nagłówek, szare sekcje, rozwijane menu kategorii, katalog z boczną nawigacją oraz karty produktów i realizacji. Dane i zdjęcia pochodzą z Home Kreator, nie z katalogów stron referencyjnych.
+
+## Panel treści
+
+Produkty i realizacje są przechowywane w bazie danych i zarządzane pod /admin. Pliki JSON stanowią wyłącznie dane startowe. Import zachowuje edycje i wpisy archiwalne, także po zmianie adresu URL. Konta administratorów tworzy się poleceniem admin:create, bez domyślnych haseł.

@@ -5,7 +5,7 @@
  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
  <title>@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator</title>
  <meta name="description" content="@yield('description', 'Home Kreator — domki modułowe, pawilony sanitarne i sauny. Wybierz model, poznaj wyposażenie i zapytaj o wycenę. Telefon 730 204 633.')">
- <meta name="theme-color" content="#e30613"><link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+ <meta name="theme-color" content="#245b4b"><link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
  <link rel="canonical" href="{{ url()->current() }}">
  <meta property="og:title" content="@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator">
  <meta property="og:type" content="website"><meta property="og:image" content="{{ asset('images/domek.jpeg') }}">
@@ -27,7 +27,7 @@
   <a href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>O nas</a>
   <a href="{{ route('contact') }}" @if(request()->routeIs('contact')) aria-current="page" @endif>Kontakt</a>
  </nav>
- <a class="btn btn-red header-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>730 204 633</a>
+ <a class="btn btn-primary header-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>730 204 633</a>
 </div></header>
 <main id="main">@yield('content')</main>
 <footer class="site-footer"><div class="container footer-grid">

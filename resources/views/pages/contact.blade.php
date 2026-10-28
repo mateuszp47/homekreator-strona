@@ -14,6 +14,6 @@
 <label>Twoja wiadomość <span>*</span><textarea name="message" rows="5" minlength="10" maxlength="5000" required placeholder="Napisz o przeznaczeniu, wymiarach i wyposażeniu modułu…" @error('message') aria-invalid="true" @enderror>{{ old('message') }}</textarea></label>
 <div class="honeypot" aria-hidden="true"><label>Strona internetowa<input name="website" tabindex="-1" autocomplete="off"></label></div>
 <label class="checkbox-label"><input type="checkbox" name="privacy" value="1" required @checked(old('privacy'))><span>Zapoznałem/am się z <a href="{{ route('privacy') }}">polityką prywatności</a> i informacją o przetwarzaniu danych w celu odpowiedzi na zapytanie. *</span></label>
-<button class="btn btn-red" type="submit" @disabled(!$contactAvailable)>Wyślij zapytanie <x-icon/></button>
+<button class="btn btn-primary" type="submit" @disabled(!$contactAvailable)>Wyślij zapytanie <x-icon/></button>
 </form></div></div></section>
 @endsection
