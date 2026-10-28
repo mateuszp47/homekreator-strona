@@ -1,0 +1,1 @@
+{"name":"homekreator-strona","version":"1.0.0","private":true,"description":"Strona Home Kreator — katalog domków i pawilonów modułowych","scripts":{"build":"python3 scripts/build.py","dev":"python3 scripts/serve.py","check":"python3 scripts/check.py"}}
