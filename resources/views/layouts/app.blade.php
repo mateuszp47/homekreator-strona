@@ -4,7 +4,7 @@
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
  <title>@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator</title>
- <meta name="description" content="@yield('description', 'Home Kreator — domki modułowe, pawilony sanitarne i sauny. Wybierz model, poznaj wyposażenie i zapytaj o wycenę. Telefon 730 204 633.')">
+ <meta name="description" content="@yield('description', 'Home Kreator — domki modułowe, pawilony sanitarne i sauny. Poznaj ofertę i zapytaj o wycenę.')">
  <meta name="theme-color" content="#245b4b"><link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
  <link rel="canonical" href="{{ url()->current() }}">
  <meta property="og:title" content="@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator">
@@ -27,15 +27,15 @@
   <a href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>O nas</a>
   <a href="{{ route('contact') }}" @if(request()->routeIs('contact')) aria-current="page" @endif>Kontakt</a>
  </nav>
- <a class="btn btn-primary header-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>730 204 633</a>
+ <a class="btn btn-primary header-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>{{ config('homekreator.phone') }}</a>
 </div></header>
 <main id="main">@yield('content')</main>
 <footer class="site-footer"><div class="container footer-grid">
- <div><a class="logo footer-logo" href="{{ route('home') }}">home<strong>kreator</strong></a><p>Gotowe moduły.<br>Przestrzeń dla Twoich pomysłów.</p><a class="footer-phone" href="tel:+48730204633">730 204 633</a><div class="footer-socials" aria-label="Media społecznościowe">@foreach(config('homekreator.socials') as $social)<a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="Home Kreator — {{ $social['name'] }} (otwiera nową kartę)"><x-icon :name="$social['icon']"/><span>{{ $social['name'] }}</span><span aria-hidden="true">↗</span></a>@endforeach</div></div>
+ <div><a class="logo footer-logo" href="{{ route('home') }}">home<strong>kreator</strong></a><p>Gotowe moduły.<br>Przestrzeń dla Twoich pomysłów.</p><a class="footer-phone" href="tel:{{ config('homekreator.phone_href') }}">{{ config('homekreator.phone') }}</a><div class="footer-socials" aria-label="Media społecznościowe">@foreach(config('homekreator.socials') as $social)<a href="{{ $social['url'] }}" target="_blank" rel="noopener noreferrer" aria-label="Home Kreator — {{ $social['name'] }} (otwiera nową kartę)"><x-icon :name="$social['icon']"/><span>{{ $social['name'] }}</span><span aria-hidden="true">↗</span></a>@endforeach</div></div>
  <div><h2>Nasza oferta</h2>@foreach($catalog->categories() as $category)<a href="{{ route('offer',$category['slug']) }}">{{ $category['name'] }}</a>@endforeach</div>
  <div><h2>Warto wiedzieć</h2><a href="{{ route('projects') }}">Realizacje</a><a href="{{ route('delivery') }}">Transport i montaż</a><a href="{{ route('about') }}">O nas</a><a href="{{ route('contact') }}">Kontakt</a><a href="{{ route('privacy') }}">Polityka prywatności</a></div>
- <div><h2>Dane firmy</h2><p>ZIG ZAG BUD<br>ul. Słomiana 18<br>26-500 Szydłowiec</p><a href="tel:+48577300588">+48 577 300 588</a><a href="https://www.google.com/maps/search/?api=1&query=S%C5%82omiana+18+Szyd%C5%82owiec" target="_blank" rel="noopener">Wyznacz trasę ↗</a></div>
+ <div><h2>Dane firmy</h2><p>{{ config('homekreator.company') }}<br>{{ config('homekreator.street') }}<br>{{ config('homekreator.postal_code') }} {{ config('homekreator.city') }}</p><a href="tel:{{ config('homekreator.secondary_phone_href') }}">{{ config('homekreator.secondary_phone') }}</a><a href="https://www.google.com/maps/search/?api=1&amp;query={{ rawurlencode(config('homekreator.address')) }}" target="_blank" rel="noopener">Wyznacz trasę ↗</a></div>
 </div><div class="container footer-bottom"><span>© {{ date('Y') }} Home Kreator. Wszelkie prawa zastrzeżone.</span><span>Domki modułowe · Pawilony sanitarne · Sauny</span></div></footer>
-<a class="mobile-call" href="tel:+48730204633"><x-icon name="phone"/> Zadzwoń: 730 204 633</a>
+<a class="mobile-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/> Zadzwoń: {{ config('homekreator.phone') }}</a>
 <dialog id="lightbox" aria-label="Galeria zdjęć"><button data-close-lightbox aria-label="Zamknij zdjęcie">×</button><img alt=""><p></p></dialog>
 </body></html>

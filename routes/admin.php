@@ -13,6 +13,11 @@ Route::middleware('guest')->group(function(){
 });
 Route::prefix('admin')->name('admin.')->middleware(['auth',EnsureAdmin::class])->group(function(){
  Route::get('/',fn()=>view('admin.dashboard',['unreadInquiries'=>Inquiry::whereNull('read_at')->count(),'products'=>Product::count(),'projects'=>Project::count(),'drafts'=>Product::where('is_published',false)->count()+Project::where('is_published',false)->count()]))->name('dashboard');
+ Route::get('/kopie',[\App\Http\Controllers\Admin\BackupController::class,'index'])->name('backups.index');
+ Route::post('/kopie',[\App\Http\Controllers\Admin\BackupController::class,'store'])->middleware('throttle:3,10')->name('backups.store');
+ Route::get('/kopie/{file}',[\App\Http\Controllers\Admin\BackupController::class,'download'])->name('backups.download');
+ Route::get('/ustawienia',[\App\Http\Controllers\Admin\SettingsController::class,'edit'])->name('settings');
+ Route::put('/ustawienia',[\App\Http\Controllers\Admin\SettingsController::class,'update'])->name('settings.update');
  Route::get('/wiadomosci',[InquiryController::class,'index'])->name('inquiries.index');
  Route::get('/wiadomosci/{inquiry}',[InquiryController::class,'show'])->whereNumber('inquiry')->name('inquiries.show');
  Route::patch('/wiadomosci/{inquiry}/status',[InquiryController::class,'read'])->whereNumber('inquiry')->name('inquiries.read');

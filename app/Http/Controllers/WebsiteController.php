@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 class WebsiteController extends Controller
 {
  public function __construct(private Catalog $catalog) {}
- public function home() { return view('pages.home',['products'=>$this->catalog->products()->take(3),'projects'=>$this->catalog->projects()->take(3)]); }
+ public function home() { return view('pages.home',['products'=>$this->catalog->featuredProducts(),'projects'=>$this->catalog->projects()->take(3)]); }
  public function offer(Request $request,?string $category=null) {
   $validated=$request->validate(['q'=>['nullable','string','max:100'],'sort'=>['nullable','in:default,price-asc,price-desc']]);
   $selected=$category ? $this->catalog->category($category):null;

@@ -4,7 +4,7 @@ Strona Home Kreator zbudowana od nowa w **Laravel 13 + Blade + Vite**. Wygląd n
 
 ## Wymagania
 
-- PHP 8.3+ z rozszerzeniami wymaganymi przez Laravel (m.in. mbstring, DOM/XML, PDO, fileinfo, tokenizer, ctype, OpenSSL).
+- PHP 8.3+ z rozszerzeniami Laravel oraz **GD z obsługą WebP, Phar i zlib**. Na typowym PHP z Homebrew są dostępne.
 - Composer 2.
 - Node.js 22.12+ i npm (Vite 8).
 
@@ -23,7 +23,7 @@ php artisan migrate --seed
 php artisan storage:link
 npm install
 npm run build
-php artisan serve
+php artisan site:serve
 ```
 
 Otwórz **http://127.0.0.1:8000**. Aplikacja używa lokalnej bazy SQLite. Polecenie migrate --seed przenosi początkową ofertę i realizacje do bazy. Sesje i cache działają na plikach.
@@ -36,7 +36,7 @@ Po pierwszej konfiguracji możesz uruchamiać PHP oraz Vite razem:
 composer run dev
 ```
 
-Albo w dwóch terminalach: `php artisan serve` oraz `npm run dev`. Zatrzymanie serwerów: Control+C.
+Albo w dwóch terminalach: `php artisan site:serve` oraz `npm run dev`. Zatrzymanie serwerów: Control+C.
 
 ## Funkcje
 
@@ -124,10 +124,25 @@ Panel obsługuje:
 - archiwizowanie i przywracanie wpisów jako szkiców;
 - odczytywanie zapytań z formularza i oznaczanie wiadomości jako przeczytane/nieprzeczytane.
 
-Zdjęcia: JPG/PNG/WebP, maks. 8 MB i 6000 × 6000 px na plik, do 15 nowych zdjęć galerii naraz. Ustaw limity PHP `upload_max_filesize` i `post_max_size` odpowiednio do wielkości całego formularza. Wgrane pliki trafiają do `storage/app/public/catalog`, a `storage:link` udostępnia je przez `public/storage`. Pliki usunięte z galerii pozostają w magazynie, aby nie uszkodzić innych wpisów i umożliwić odzyskiwanie treści.
+Zdjęcia: JPG/PNG/WebP, maks. **10 MB, 24 megapiksele i 6000 × 6000 px** na plik, do **30 nowych zdjęć galerii naraz**. Nowe zdjęcia są przetwarzane przez PHP GD: korekcja orientacji JPEG (jeśli EXIF jest dostępne), skalowanie do maks. 2048 px i zapis jako WebP. Dotychczasowe zdjęcia pozostają bez zmian. Podgląd oraz przeciąganie lub przyciski zmiany kolejności są w formularzu panelu. Ustaw limity PHP `upload_max_filesize` i `post_max_size` odpowiednio do wielkości całego formularza. Wgrane pliki trafiają do `storage/app/public/catalog`, a `storage:link` udostępnia je przez `public/storage`. Pliki usunięte z galerii pozostają w magazynie, aby nie uszkodzić innych wpisów i umożliwić odzyskiwanie treści.
 
 Ponowne `db:seed` nie nadpisuje edycji ani archiwalnych wpisów. Twórz kopie zapasowe **bazy danych oraz storage/app/public** — te treści nie są zapisywane w Git. Na produkcji używaj HTTPS oraz `APP_DEBUG=false`.
 
 ## Aktualizacja formularza kontaktowego
 
 Po pobraniu zmian wykonaj `php artisan migrate` oraz `npm run build`. Formularz znajduje się pod `/kontakt`, a skrzynka pod `/admin/wiadomosci`. Nie trzeba konfigurować SMTP, aby przyjmować zgłoszenia. Odpowiedź przez przycisk „Odpowiedz przez pocztę” otwiera własny program pocztowy administratora. Wiadomości są prywatne i nie trafiają do repozytorium.
+
+
+## Nowe narzędzia panelu
+
+- `/admin/ustawienia`: firma, telefony, adres, Instagram, TikTok, FAQ i odbiorca powiadomień.
+- Produkty: wyróżnienie na głównej, opis ceny podstawowej, dodatków i transportu. Pokazywane są maks. 3 opublikowane wyróżnione produkty; przy braku wyróżnień pozostaje dotychczasowy wybór.
+- Realizacje: miejscowość, wymiary, zastosowanie i wyposażenie.
+- Galerie: podgląd nowych plików, kolejność zdjęć, WebP. Zdjęcie główne jest niezależne od kolejności galerii.
+- `/admin/kopie`: utworzenie i pobranie prywatnej kopii danych. `php artisan site:backup` działa też z terminala.
+
+Lokalnie uruchamiaj **`php artisan site:serve`** — ustawia limity PHP dla większych galerii (350 MB POST, 10 MB na plik, 40 plików, 256 MB pamięci). `composer run dev` również korzysta z tego polecenia. Standardowe `php artisan serve` pozostaje dostępne, ale korzysta z limitów Twojego php.ini.
+
+Po tej aktualizacji wykonaj w folderze projektu `composer install`, `php artisan migrate` i `npm run build`. Twoje istniejące produkty i zdjęcia nie są nadpisywane. Jeśli Composer zgłosi brak GD, włącz to rozszerzenie w swojej instalacji PHP.
+
+Wdrożenie, limity hostingu, harmonogram kopii i przywracanie: **[docs/hosting-i-backup.md](docs/hosting-i-backup.md)**.

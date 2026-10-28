@@ -15,7 +15,7 @@ class ContactController extends Controller
    $inquiry=Inquiry::create([...$data,'model_name'=>$model['name']??null]);
   } catch(Throwable $exception) {
    report($exception);
-   return back()->withInput()->withErrors(['delivery'=>'Nie udało się zapisać zapytania. Spróbuj ponownie lub zadzwoń pod 730 204 633.']);
+   return back()->withInput()->withErrors(['delivery'=>'Nie udało się zapisać zapytania. Spróbuj ponownie lub zadzwoń pod '.config('homekreator.phone').'.']);
   }
   // The database inbox is authoritative; a mail failure must not lose the inquiry.
   if($catalog->contactAvailable()) {

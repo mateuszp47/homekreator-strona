@@ -4,6 +4,7 @@ use Illuminate\Support\Collection;
 class Catalog
 {
  public function products(): Collection { return \App\Models\Product::where('is_published',true)->orderBy('sort_order')->orderBy('id')->get()->map(fn($p)=>$p->catalogData()); }
+ public function featuredProducts(): Collection { $products=$this->products();$featured=$products->where('is_featured',true);return ($featured->isNotEmpty()?$featured:$products)->take(3); }
  public function product(string $slug): array { return $this->products()->firstWhere('slug',$slug) ?? abort(404); }
  public function categories(): Collection { return collect(config('homekreator.categories')); }
  public function category(string $slug): array {
