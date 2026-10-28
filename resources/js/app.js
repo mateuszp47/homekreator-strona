@@ -22,3 +22,8 @@ document.querySelectorAll('[data-photo]').forEach(button=>button.addEventListene
  photo.querySelector('img').src=button.dataset.photo;photo.dataset.lightbox=button.dataset.photo;
  document.querySelectorAll('[data-photo]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
 }));
+// Prevent accidental double submits after the browser has validated the form.
+document.querySelector('[data-contact-submit]')?.form?.addEventListener('submit',event=>{
+ const button=event.target.querySelector('[data-contact-submit]');button.disabled=true;button.textContent='Przesyłanie zapytania…';
+});
+window.addEventListener('pageshow',()=>{const button=document.querySelector('[data-contact-submit]');if(button){button.disabled=false;button.innerHTML='Wyślij zapytanie <span aria-hidden="true">→</span>';}});

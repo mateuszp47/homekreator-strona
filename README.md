@@ -45,8 +45,8 @@ Albo w dwóch terminalach: `php artisan serve` oraz `npm run dev`. Zatrzymanie s
 - Sześć kart produktów z cenami netto, wyposażeniem, miniaturami i powiększaniem zdjęć.
 - Cztery realizacje ze szczegółami i galeriami.
 - O nas, transport i montaż, kontakt, FAQ i polityka prywatności.
-- Formularz: walidacja Laravel, CSRF, limit 5 żądań/minutę i honeypot.
-- SMTP z obsługą błędów; sukces wyświetla się po zaakceptowaniu wysyłki przez transport.
+- Formularz kontaktowy zapisuje zgłoszenia w bazie: walidacja Laravel, CSRF, limit 5 żądań/minutę i honeypot.
+- Skrzynka „Wiadomości” w panelu: dane kontaktowe, model, treść i status przeczytania. Opcjonalne powiadomienia SMTP; awaria poczty nie gubi zapytania.
 - Mapa witryny `/sitemap.xml`, metadane i przekierowania 301 ze starych URL `.html`.
 - Responsywna nawigacja i rozwijane kategorie.
 
@@ -64,7 +64,7 @@ Albo w dwóch terminalach: `php artisan serve` oraz `npm run dev`. Zatrzymanie s
 
 ## Poczta
 
-Firmowego adresu e-mail nie udało się potwierdzić. Dlatego formularz pokazuje kontakt telefoniczny i ma wyłączony przycisk wysyłki. Aby uruchomić wysyłkę, ustaw w lokalnym `.env` prawdziwe dane:
+Formularz działa bez SMTP: zapisuje każde poprawne zapytanie w bazie, a administrator odczytuje je w `/admin/wiadomosci`. Firmowego adresu e-mail nie udało się potwierdzić. Aby dodatkowo otrzymywać powiadomienia e-mail, ustaw w lokalnym `.env` prawdziwe dane:
 
 ```dotenv
 CONTACT_FORM_ENABLED=true
@@ -78,7 +78,7 @@ MAIL_FROM_ADDRESS=adres-nadawcy
 MAIL_FROM_NAME="Home Kreator"
 ```
 
-W razie potrzeby ustaw też `MAIL_SCHEME` zgodnie z wymaganiami dostawcy. Nie zapisuj `.env` w repozytorium. Po zmianie konfiguracji wykonaj `php artisan config:clear`. Tryb `MAIL_MAILER=log` nie uruchamia formularza i nie udaje wysyłki.
+W razie potrzeby ustaw też `MAIL_SCHEME` zgodnie z wymaganiami dostawcy. Nie zapisuj `.env` w repozytorium. Po zmianie konfiguracji wykonaj `php artisan config:clear`. Tryb `MAIL_MAILER=log` nie wysyła powiadomień. Formularz nadal przyjmuje zapytania do panelu. Komunikat potwierdza przyjęcie zapytania, nie doręczenie e-maila.
 
 ## Testy i build
 
@@ -121,8 +121,13 @@ Panel obsługuje:
 - powiązanie realizacji z produktem;
 - zdjęcie główne, galerię i usuwanie zdjęć z galerii;
 - szkice, publikację i kolejność wyświetlania;
-- archiwizowanie i przywracanie wpisów jako szkiców.
+- archiwizowanie i przywracanie wpisów jako szkiców;
+- odczytywanie zapytań z formularza i oznaczanie wiadomości jako przeczytane/nieprzeczytane.
 
 Zdjęcia: JPG/PNG/WebP, maks. 8 MB i 6000 × 6000 px na plik, do 15 nowych zdjęć galerii naraz. Ustaw limity PHP `upload_max_filesize` i `post_max_size` odpowiednio do wielkości całego formularza. Wgrane pliki trafiają do `storage/app/public/catalog`, a `storage:link` udostępnia je przez `public/storage`. Pliki usunięte z galerii pozostają w magazynie, aby nie uszkodzić innych wpisów i umożliwić odzyskiwanie treści.
 
 Ponowne `db:seed` nie nadpisuje edycji ani archiwalnych wpisów. Twórz kopie zapasowe **bazy danych oraz storage/app/public** — te treści nie są zapisywane w Git. Na produkcji używaj HTTPS oraz `APP_DEBUG=false`.
+
+## Aktualizacja formularza kontaktowego
+
+Po pobraniu zmian wykonaj `php artisan migrate` oraz `npm run build`. Formularz znajduje się pod `/kontakt`, a skrzynka pod `/admin/wiadomosci`. Nie trzeba konfigurować SMTP, aby przyjmować zgłoszenia. Odpowiedź przez przycisk „Odpowiedz przez pocztę” otwiera własny program pocztowy administratora. Wiadomości są prywatne i nie trafiają do repozytorium.

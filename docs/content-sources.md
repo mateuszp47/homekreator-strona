@@ -26,7 +26,7 @@ Kod napisano od podstaw. Nie otrzymano prywatnego kodu źródłowego ani backend
 7. Nie znaleziono adresu e-mail, NIP, godzin pracy ani potwierdzonych profili społecznościowych. Nie dodano zmyślonych danych.
 8. Opinie mają pozostałości szablonu, m.in. „Add Your Heading Text Here” i ocenę z 3614 recenzji bez wiarygodnego odnośnika. Nie przeniesiono ocen ani opinii.
 9. Zdjęcia przedstawiają przykładowe konfiguracje ze starej witryny; powiązanie zdjęć z konkretnymi wariantami trzeba potwierdzić.
-10. Formularz Laravel ma walidację, CSRF, limit żądań, honeypot i obsługę SMTP. Wysyłka jest wyłączona do czasu ustawienia CONTACT_FORM_ENABLED, CONTACT_RECIPIENT i poprawnego transportu poczty. Nie potwierdzono firmowego adresu e-mail.
+10. Formularz Laravel ma walidację, CSRF, limit żądań, honeypot i obsługę SMTP. Formularz zapisuje zgłoszenia w bazie i panelu Wiadomości. Opcjonalne powiadomienia e-mail są wyłączone do czasu ustawienia CONTACT_FORM_ENABLED, CONTACT_RECIPIENT i poprawnego transportu poczty. Nie potwierdzono firmowego adresu e-mail.
 11. Wymagania administracyjne dla ustawienia modułu trzeba ocenić indywidualnie; nie przeniesiono ogólnej obietnicy „bez pozwolenia”.
 
 ## Zdjęcia źródłowe
