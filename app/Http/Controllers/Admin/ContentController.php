@@ -15,11 +15,12 @@ class ContentController extends Controller {
   $class=$this->model($kind);$archived=$request->boolean('archiwum');
   $query=$archived?$class::onlyTrashed():$class::query();
   $items=$query->orderBy('sort_order')->orderByDesc('id')->paginate(20)->withQueryString();
-  return view('admin.index',compact('items','kind','archived'));
+  $categories=app(\App\Support\Catalog::class)->allCategories();
+  return view('admin.index',compact('items','kind','archived','categories'));
  }
  public function create(string $kind) { $class=$this->model($kind);return $this->form($kind,new $class); }
  public function edit(string $kind,int $id) {return $this->form($kind,$this->model($kind)::findOrFail($id));}
- private function form(string $kind,$item) {return view('admin.form',['kind'=>$kind,'item'=>$item,'products'=>Product::orderBy('name')->get(),'categories'=>config('homekreator.categories')]);}
+ private function form(string $kind,$item) {return view('admin.form',['kind'=>$kind,'item'=>$item,'products'=>Product::orderBy('name')->get(),'categories'=>app(\App\Support\Catalog::class)->allCategories()]);}
  public function store(Request $request,string $kind) { $class=$this->model($kind);return $this->save($request,$kind,new $class); }
  public function update(Request $request,string $kind,int $id) {return $this->save($request,$kind,$this->model($kind)::findOrFail($id));}
  private function save(Request $request,string $kind,$item) {
@@ -35,7 +36,7 @@ class ContentController extends Controller {
   }
   $rules=[
    'name'=>['required','string','max:200'],'slug'=>['required','string','max:200','regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',Rule::unique($table,'slug')->ignore($item->id)],
-   'category'=>['required',Rule::in(array_keys(config('homekreator.categories')))],'description'=>['required','string','max:15000'],
+   'category'=>['required',Rule::exists('categories','key')],'description'=>['required','string','max:15000'],
    'is_published'=>['nullable','boolean'],'sort_order'=>['required','integer','min:0','max:99999'],
    'image'=>[$item->exists?'nullable':'required','image','mimes:jpg,jpeg,png,webp','max:'.config('images.max_upload_kb'),'dimensions:max_width=6000,max_height=6000'],
    'gallery'=>['nullable','array','max:'.config('images.max_new_gallery')],'gallery.*'=>['image','mimes:jpg,jpeg,png,webp','max:'.config('images.max_upload_kb'),'dimensions:max_width=6000,max_height=6000'],
@@ -44,6 +45,7 @@ class ContentController extends Controller {
   ];
   if($product) $rules += ['size'=>['required','string','max:100'],'area'=>['required','string','max:150'],'price'=>['nullable','integer','min:0','max:100000000'],'full_price'=>['nullable','integer','min:0','max:100000000'],'equipment_text'=>['nullable','string','max:10000'],'is_featured'=>['nullable','boolean'],'base_includes'=>['nullable','string','max:10000'],'extra_options'=>['nullable','string','max:10000'],'transport_note'=>['nullable','string','max:3000']];
   else $rules += ['product_id'=>['nullable',Rule::exists('products','id')->whereNull('deleted_at')],'location'=>['nullable','string','max:150'],'dimensions'=>['nullable','string','max:100'],'purpose'=>['nullable','string','max:200'],'equipment_details'=>['nullable','string','max:10000']];
+  $rules += \App\Support\Seo::rules();
   $data=$request->validate($rules, ['required'=>'Uzupełnij pole :attribute.','unique'=>'Ten adres jest już zajęty.','image'=>'Wybierz poprawny plik graficzny.','mimes'=>'Dozwolone formaty: JPG, PNG i WebP.','max'=>'Przekroczono dozwolony rozmiar lub długość pola :attribute.','regex'=>'Adres może zawierać małe litery, cyfry i pojedyncze myślniki.']);
   $uploads=[];
   try {
@@ -53,8 +55,9 @@ class ContentController extends Controller {
    $gallery=array_values(array_diff($ordered,$data['remove_gallery']??[]));
    foreach($request->file('gallery',[]) as $file){$path=app(\App\Services\ImageProcessor::class)->store($file,'gallery');if(!$path)throw new \RuntimeException('Nie udało się zapisać zdjęcia.');$uploads[]=$path;$gallery[]=$path;}
    $attributes=collect($data)->except(['image','gallery','remove_gallery','gallery_order','equipment_text'])->all();
+   $attributes['seo_noindex']=$request->boolean('seo_noindex');
    $attributes['image']=$image;$attributes['gallery']=array_values(array_unique([...$gallery,$image]));$attributes['is_published']=$request->boolean('is_published');
-   if($product){$attributes['is_featured']=$request->boolean('is_featured');$attributes['label']=config('homekreator.categories.'.$data['category'].'.name');$attributes['equipment']=array_values(array_filter(array_map('trim',preg_split('/\r\n|\r|\n/',$data['equipment_text']??''))));}
+   if($product){$attributes['is_featured']=$request->boolean('is_featured');$attributes['label']=\App\Models\Category::findOrFail($data['category'])->name;$attributes['equipment']=array_values(array_filter(array_map('trim',preg_split('/\r\n|\r|\n/',$data['equipment_text']??''))));}
    DB::transaction(fn()=>$item->fill($attributes)->save());
   } catch(Throwable $exception){Storage::disk('public')->delete($uploads);throw $exception;}
   return to_route('admin.content.edit',[$kind,$item->id])->with('success','Zapisano zmiany. '.($item->is_published?'Wpis jest opublikowany.':'Wpis jest szkicem.'));
