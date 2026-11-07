@@ -13,6 +13,12 @@ Route::middleware('guest')->group(function(){
 });
 Route::prefix('admin')->name('admin.')->middleware(['auth',EnsureAdmin::class])->group(function(){
  Route::get('/',fn()=>view('admin.dashboard',['unreadInquiries'=>Inquiry::whereNull('read_at')->count(),'products'=>Product::count(),'projects'=>Project::count(),'drafts'=>Product::where('is_published',false)->count()+Project::where('is_published',false)->count()]))->name('dashboard');
+ Route::get('/uzytkownicy',[\App\Http\Controllers\Admin\UserController::class,'index'])->name('users.index');
+ Route::get('/uzytkownicy/dodaj',[\App\Http\Controllers\Admin\UserController::class,'create'])->name('users.create');
+ Route::post('/uzytkownicy',[\App\Http\Controllers\Admin\UserController::class,'store'])->name('users.store');
+ Route::get('/uzytkownicy/{user}/edytuj',[\App\Http\Controllers\Admin\UserController::class,'edit'])->whereNumber('user')->name('users.edit');
+ Route::put('/uzytkownicy/{user}',[\App\Http\Controllers\Admin\UserController::class,'update'])->whereNumber('user')->name('users.update');
+ Route::patch('/uzytkownicy/{user}/status',[\App\Http\Controllers\Admin\UserController::class,'status'])->whereNumber('user')->name('users.status');
  Route::get('/seo',[\App\Http\Controllers\Admin\SeoController::class,'edit'])->name('seo.edit');
  Route::put('/seo',[\App\Http\Controllers\Admin\SeoController::class,'update'])->name('seo.update');
  Route::get('/kategorie',[\App\Http\Controllers\Admin\CategoryController::class,'index'])->name('categories.index');
