@@ -15,7 +15,8 @@ Route::post('/kontakt',ContactController::class)->middleware('throttle:5,1')->na
 Route::view('/polityka-prywatnosci','pages.privacy')->name('privacy');
 Route::get('/sitemap.xml',function(Catalog $catalog){
  $urls=collect(['home','offer','projects','about','delivery','contact','privacy'])->map(fn($name)=>route($name));
- $urls=$urls->merge($catalog->categories()->map(fn($c)=>route('offer',$c['slug'])))->merge($catalog->products()->map(fn($p)=>route('product',$p['slug'])))->merge($catalog->projects()->map(fn($p)=>route('project',$p['slug'])));
+ $urls=$urls->merge($catalog->categories()->map(fn($c)=>route('offer',$c['slug'])))->merge($catalog->products()->reject(fn($p)=>$p['seo_noindex'])->map(fn($p)=>route('product',$p['slug'])))->merge($catalog->projects()->reject(fn($p)=>$p['seo_noindex'])->map(fn($p)=>route('project',$p['slug'])));
+ if(\App\Models\SiteSetting::find('home_seo')?->value['seo_noindex']??false)$urls=$urls->reject(fn($url)=>$url===route('home'));
  return response()->view('sitemap',compact('urls'))->header('Content-Type','application/xml');
 })->name('sitemap');
 Route::get('/{legacy}.html',function(string $legacy,Catalog $catalog){
