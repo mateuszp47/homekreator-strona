@@ -1,0 +1,6 @@
+@extends('admin.layout')
+@section('title','Kategorie')
+@section('content')
+<div class="admin-title"><div><h1>Kategorie</h1><p>Wspólne kategorie produktów i realizacji. Wyłączenie ukrywa kategorię i jej wpisy na stronie; dane pozostają w panelu.</p></div><a class="btn btn-primary" href="{{ route('admin.categories.create') }}">+ Dodaj kategorię</a></div>
+@forelse($categories as $category)<div class="admin-box"><h2>{{ $category->name }}</h2><p>/oferta/{{ $category->slug }} · Kolejność: {{ $category->sort_order }} · <strong>{{ $category->is_active?'Włączona':'Wyłączona' }}</strong></p><p>{{ $category->description }}</p><div class="button-row"><a class="btn btn-outline" href="{{ route('admin.categories.edit',$category) }}">Edytuj</a><form method="post" action="{{ route('admin.categories.toggle',$category) }}">@csrf @method('patch')<button class="btn btn-outline" type="submit">{{ $category->is_active?'Wyłącz kategorię':'Włącz kategorię' }}</button></form>@if($category->is_active)<a class="text-link" href="{{ route('offer',$category->slug) }}" target="_blank" rel="noopener">Zobacz na stronie ↗</a>@endif</div></div>@empty<div class="admin-box">Brak kategorii. Dodaj pierwszą kategorię.</div>@endforelse
+@endsection
