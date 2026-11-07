@@ -13,6 +13,14 @@ Route::middleware('guest')->group(function(){
 });
 Route::prefix('admin')->name('admin.')->middleware(['auth',EnsureAdmin::class])->group(function(){
  Route::get('/',fn()=>view('admin.dashboard',['unreadInquiries'=>Inquiry::whereNull('read_at')->count(),'products'=>Product::count(),'projects'=>Project::count(),'drafts'=>Product::where('is_published',false)->count()+Project::where('is_published',false)->count()]))->name('dashboard');
+ Route::get('/seo',[\App\Http\Controllers\Admin\SeoController::class,'edit'])->name('seo.edit');
+ Route::put('/seo',[\App\Http\Controllers\Admin\SeoController::class,'update'])->name('seo.update');
+ Route::get('/kategorie',[\App\Http\Controllers\Admin\CategoryController::class,'index'])->name('categories.index');
+ Route::get('/kategorie/dodaj',[\App\Http\Controllers\Admin\CategoryController::class,'create'])->name('categories.create');
+ Route::post('/kategorie',[\App\Http\Controllers\Admin\CategoryController::class,'store'])->name('categories.store');
+ Route::get('/kategorie/{category}/edytuj',[\App\Http\Controllers\Admin\CategoryController::class,'edit'])->name('categories.edit');
+ Route::put('/kategorie/{category}',[\App\Http\Controllers\Admin\CategoryController::class,'update'])->name('categories.update');
+ Route::patch('/kategorie/{category}/status',[\App\Http\Controllers\Admin\CategoryController::class,'toggle'])->name('categories.toggle');
  Route::get('/kopie',[\App\Http\Controllers\Admin\BackupController::class,'index'])->name('backups.index');
  Route::post('/kopie',[\App\Http\Controllers\Admin\BackupController::class,'store'])->middleware('throttle:3,10')->name('backups.store');
  Route::get('/kopie/{file}',[\App\Http\Controllers\Admin\BackupController::class,'download'])->name('backups.download');
