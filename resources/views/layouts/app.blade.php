@@ -3,13 +3,21 @@
 <html lang="pl">
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
- <title>@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator</title>
- <meta name="description" content="@yield('description', 'Home Kreator — domki modułowe, pawilony sanitarne i sauny. Poznaj ofertę i zapytaj o wycenę.')">
+ @php
+  $pageTitle=$seo['title']??trim($__env->yieldContent('title','Domki modułowe, pawilony i sauny')).' | Home Kreator';
+  $pageDescription=$seo['description']??trim($__env->yieldContent('description','Home Kreator — domki modułowe, pawilony sanitarne i sauny. Poznaj ofertę i zapytaj o wycenę.'));
+  $canonical=$seo['canonical']??url()->current();
+  $noindex=($seo['noindex']??false)||request()->hasAny(['q','sort']);
+ @endphp
+ <title>{{ $pageTitle }}</title>
+ <meta name="description" content="{{ $pageDescription }}">
  <meta name="theme-color" content="#245b4b"><link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
- <link rel="canonical" href="{{ url()->current() }}">
- <meta property="og:title" content="@yield('title', 'Domki modułowe, pawilony i sauny') | Home Kreator">
- <meta property="og:type" content="website"><meta property="og:image" content="{{ asset('images/domek.jpeg') }}">
- @if(request()->hasAny(['q','sort']))<meta name="robots" content="noindex,follow">@endif
+ <link rel="canonical" href="{{ $canonical }}">
+ <meta property="og:title" content="{{ $pageTitle }}">
+ <meta property="og:description" content="{{ $pageDescription }}">
+ <meta property="og:url" content="{{ $canonical }}">
+ <meta property="og:type" content="website"><meta property="og:image" content="{{ $seo['image']??asset('images/domek.jpeg') }}">
+ @if($noindex)<meta name="robots" content="noindex,follow">@endif
  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
