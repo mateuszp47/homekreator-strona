@@ -24,10 +24,10 @@ class ContentController extends Controller {
  public function update(Request $request,string $kind,int $id) {return $this->save($request,$kind,$this->model($kind)::findOrFail($id));}
  private function save(Request $request,string $kind,$item) {
   $product=$kind==='produkty';$table=$product?'products':'projects';
-  if($product && !$request->filled('slug') && is_string($request->input('name'))){
+  if(!$request->filled('slug') && is_string($request->input('name'))){
    if($item->exists && $item->slug){$slug=$item->slug;}
    else {
-    $base=Str::slug($request->input('name')) ?: 'produkt';
+    $base=Str::slug($request->input('name')) ?: ($product?'produkt':'realizacja');
     $base=substr($base,0,190);$base=rtrim($base,'-');$slug=$base;$suffix=2;
     while(DB::table($table)->where('slug',$slug)->exists()){$slug=$base.'-'.$suffix++;}
    }
