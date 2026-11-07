@@ -9,10 +9,11 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller {
  public function login(Request $request) {
   $data=$request->validate(['email'=>['required','email'],'password'=>['required','string']]);
+  $data['email']=Str::lower(trim($data['email']));
   $key='admin-login:'.hash('sha256',Str::lower($data['email']).'|'.$request->ip());
   if(RateLimiter::tooManyAttempts($key,5)) throw ValidationException::withMessages(['email'=>'Zbyt wiele prób. Spróbuj ponownie za '.RateLimiter::availableIn($key).' sekund.']);
-  if(!Auth::attempt([...$data,'is_admin'=>true])) {RateLimiter::hit($key,60);throw ValidationException::withMessages(['email'=>'Nieprawidłowy e-mail lub hasło.']);}
-  RateLimiter::clear($key);$request->session()->regenerate();return redirect()->intended(route('admin.dashboard'));
+  if(!Auth::attempt([...$data,'is_admin'=>true,'is_blocked'=>false])) {RateLimiter::hit($key,60);throw ValidationException::withMessages(['email'=>'Nieprawidłowy e-mail lub hasło.']);}
+  RateLimiter::clear($key);$request->session()->regenerate();$request->session()->put('admin_auth_version.'.Auth::id(),Auth::user()->auth_version);return redirect()->intended(route('admin.dashboard'));
  }
  public function logout(Request $request) {Auth::logout();$request->session()->invalidate();$request->session()->regenerateToken();return to_route('login');}
 }
