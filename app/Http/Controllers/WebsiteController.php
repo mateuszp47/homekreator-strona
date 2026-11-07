@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 class WebsiteController extends Controller
 {
  public function __construct(private Catalog $catalog) {}
- public function home() { return view('pages.home',['products'=>$this->catalog->featuredProducts(),'projects'=>$this->catalog->projects()->take(3)]); }
+ public function home() { $seo=\App\Support\Seo::metadata(\App\Models\SiteSetting::find('home_seo')?->value??[],'Domki modułowe i pawilony dopasowane do Ciebie | Home Kreator','Home Kreator — domki modułowe, pawilony sanitarne i sauny. Poznaj ofertę i zapytaj o wycenę.',asset('images/domek.jpeg'));return view('pages.home',['seo'=>$seo,'products'=>$this->catalog->featuredProducts(),'projects'=>$this->catalog->projects()->take(3)]); }
  public function offer(Request $request,?string $category=null) {
   $validated=$request->validate(['q'=>['nullable','string','max:100'],'sort'=>['nullable','in:default,price-asc,price-desc']]);
   $selected=$category ? $this->catalog->category($category):null;
@@ -20,7 +20,8 @@ class WebsiteController extends Controller
  }
  public function product(string $slug) {
   $product=$this->catalog->product($slug);$related=$this->catalog->products()->where('slug','!=',$slug)->take(3);
-  return view('pages.product',compact('product','related'));
+  $seo=\App\Support\Seo::metadata($product,$product['name'].' | Home Kreator',$product['description'],Catalog::imageUrl($product['image']));
+  return view('pages.product',compact('product','related','seo'));
  }
  public function projects(Request $request) {
   $category=$request->query('kategoria');
@@ -28,7 +29,7 @@ class WebsiteController extends Controller
   $projects=$this->catalog->projects();if($category) $projects=$projects->where('category',$category);
   return view('pages.projects',compact('projects','category'));
  }
- public function project(string $slug) { $project=$this->catalog->projects()->firstWhere('slug',$slug)??abort(404);return view('pages.project',compact('project')); }
+ public function project(string $slug) { $project=$this->catalog->projects()->firstWhere('slug',$slug)??abort(404);$seo=\App\Support\Seo::metadata($project,$project['name'].' | Home Kreator',$project['description'],Catalog::imageUrl($project['image']));return view('pages.project',compact('project','seo')); }
  public function contact(Request $request) {
   $model=$request->query('model');$products=$this->catalog->products();
   if(!is_string($model)||!$products->contains('slug',$model)) $model='';
