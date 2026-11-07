@@ -43,6 +43,17 @@ class AdminTest extends TestCase {
   $this->delete('/admin/produkty/'.$product->id)->assertRedirect();$this->get('/produkty/'.$product->slug)->assertNotFound();
   $this->post('/admin/produkty/'.$product->id.'/przywroc')->assertRedirect();$this->assertFalse($product->fresh()->is_published);$this->assertNull($product->fresh()->deleted_at);
  }
+ public function test_product_slug_is_generated_and_reserved_for_archived_products(): void {
+  Storage::fake('public');$this->actingAs($this->admin());$data=$this->productData();unset($data['slug']);
+  $this->post('/admin/produkty',$data)->assertSessionHasNoErrors()->assertRedirect();
+  $product=Product::where('slug','nowy-modul-testowy')->firstOrFail();$product->delete();
+  $data['slug']='';
+  $this->post('/admin/produkty',$data)->assertSessionHasNoErrors()->assertRedirect();
+  $product=Product::where('slug','nowy-modul-testowy-2')->firstOrFail();
+  unset($data['image']);$data['name']='Zmieniona nazwa';
+  $this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();
+  $this->assertSame('nowy-modul-testowy-2',$product->fresh()->slug);
+ }
  public function test_projects_publish_and_handle_missing_related_product(): void {
   Storage::fake('public');$this->actingAs($this->admin());$product=Product::first();
   $this->post('/admin/realizacje',['name'=>'Nowa realizacja','slug'=>'nowa-realizacja','category'=>'domki','description'=>'Opis realizacji z panelu.','product_id'=>$product->id,'sort_order'=>0,'is_published'=>1,'image'=>$this->image(),'gallery'=>[$this->image()]])->assertSessionHasNoErrors();
