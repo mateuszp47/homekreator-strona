@@ -1,0 +1,7 @@
+<div class="admin-box"><h2>SEO — wyszukiwarki i udostępnianie</h2>
+<p>Puste pola korzystają z domyślnego tytułu, opisu i adresu strony. Własny tytuł SEO jest wyświetlany w całości, bez dopisywania nazwy firmy.</p>
+<label>Tytuł SEO<input name="meta_title" value="{{ old('meta_title',$seo['meta_title']??'') }}" maxlength="200" placeholder="np. Domki modułowe na zamówienie | Home Kreator"><small>Zwykle około 50–60 znaków.</small></label>
+<label>Opis SEO<textarea name="meta_description" rows="3" maxlength="500" placeholder="Krótki opis zachęcający do odwiedzenia strony">{{ old('meta_description',$seo['meta_description']??'') }}</textarea><small>Zwykle około 140–160 znaków. Google może wyświetlić inny fragment strony.</small></label>
+<label>Adres kanoniczny<input type="url" name="canonical_url" value="{{ old('canonical_url',$seo['canonical_url']??'') }}" maxlength="2048" placeholder="https://homekreator.com/..."><small>Pozostaw puste, aby użyć bieżącego adresu. Wypełnij, jeśli właściwa wersja tej treści jest pod innym adresem.</small></label>
+<input type="hidden" name="seo_noindex" value="0"><label class="checkbox-label"><input type="checkbox" name="seo_noindex" value="1" @checked(old('seo_noindex',$seo['seo_noindex']??false))><span>Wyłącz indeksowanie tej strony (noindex)</span></label>
+<p class="price-note">Noindex usuwa adres z mapy witryny i prosi wyszukiwarki o pominięcie strony. Strona pozostaje dostępna dla odwiedzających. Tytuł i opis są też używane przy udostępnianiu linku.</p></div>
