@@ -54,6 +54,21 @@ class AdminTest extends TestCase {
   $this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();
   $this->assertSame('nowy-modul-testowy-2',$product->fresh()->slug);
  }
+ public function test_project_slug_is_generated_and_reserved_for_archived_projects(): void {
+  Storage::fake('public');$this->actingAs($this->admin());
+  $data=['name'=>'Ładna realizacja w Łodzi','category'=>'domki','description'=>'Opis realizacji.','sort_order'=>0,'is_published'=>0,'image'=>$this->image()];
+  $this->post('/admin/realizacje',$data)->assertSessionHasNoErrors()->assertRedirect();
+  $project=Project::where('slug','ladna-realizacja-w-lodzi')->firstOrFail();$project->delete();
+  $data['slug']='';
+  $this->post('/admin/realizacje',$data)->assertSessionHasNoErrors()->assertRedirect();
+  $project=Project::where('slug','ladna-realizacja-w-lodzi-2')->firstOrFail();
+  unset($data['image']);$data['name']='Zmieniona nazwa realizacji';
+  $this->put('/admin/realizacje/'.$project->id,$data)->assertSessionHasNoErrors();
+  $this->assertSame('ladna-realizacja-w-lodzi-2',$project->fresh()->slug);
+  $data['slug']='wlasny-adres-realizacji';
+  $this->put('/admin/realizacje/'.$project->id,$data)->assertSessionHasNoErrors();
+  $this->assertSame('wlasny-adres-realizacji',$project->fresh()->slug);
+ }
  public function test_projects_publish_and_handle_missing_related_product(): void {
   Storage::fake('public');$this->actingAs($this->admin());$product=Product::first();
   $this->post('/admin/realizacje',['name'=>'Nowa realizacja','slug'=>'nowa-realizacja','category'=>'domki','description'=>'Opis realizacji z panelu.','product_id'=>$product->id,'sort_order'=>0,'is_published'=>1,'image'=>$this->image(),'gallery'=>[$this->image()]])->assertSessionHasNoErrors();
