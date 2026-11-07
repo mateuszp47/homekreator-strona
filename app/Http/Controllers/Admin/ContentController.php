@@ -6,6 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Throwable;
 class ContentController extends Controller {
@@ -23,6 +24,15 @@ class ContentController extends Controller {
  public function update(Request $request,string $kind,int $id) {return $this->save($request,$kind,$this->model($kind)::findOrFail($id));}
  private function save(Request $request,string $kind,$item) {
   $product=$kind==='produkty';$table=$product?'products':'projects';
+  if($product && !$request->filled('slug') && is_string($request->input('name'))){
+   if($item->exists && $item->slug){$slug=$item->slug;}
+   else {
+    $base=Str::slug($request->input('name')) ?: 'produkt';
+    $base=substr($base,0,190);$base=rtrim($base,'-');$slug=$base;$suffix=2;
+    while(DB::table($table)->where('slug',$slug)->exists()){$slug=$base.'-'.$suffix++;}
+   }
+   $request->merge(['slug'=>$slug]);
+  }
   $rules=[
    'name'=>['required','string','max:200'],'slug'=>['required','string','max:200','regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/',Rule::unique($table,'slug')->ignore($item->id)],
    'category'=>['required',Rule::in(array_keys(config('homekreator.categories')))],'description'=>['required','string','max:15000'],
