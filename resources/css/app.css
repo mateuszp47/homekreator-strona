@@ -29,7 +29,7 @@
 .footer-bottom{flex-wrap:wrap;align-items:center}.site-credit{color:inherit;white-space:normal;overflow-wrap:anywhere}.site-credit:hover{text-decoration:underline}
 @media(max-width:900px){.product-detail{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:600px){.product-detail{grid-template-columns:minmax(0,1fr);grid-template-areas:"gallery" "summary"}.thumbnails button{flex-basis:74px}.footer-bottom>span:nth-child(2){display:none}.site-credit{display:block;flex-basis:100%}.lightbox-stage img{max-height:60vh}}
-@media(max-width:380px){.header-call{font-size:0;gap:0;padding:9px;min-width:38px}.header-call .icon{width:18px;height:18px;flex-shrink:0}}
+@media(max-width:380px){.header-inner{width:calc(100% - 24px);gap:6px}.site-header .logo{font-size:17px;gap:5px;letter-spacing:-.7px}.site-header .logo svg{width:22px;height:26px}.site-header .logo small{display:none}.header-call{font-size:10px;gap:5px;padding:8px;min-height:36px;flex-shrink:0}.header-call .icon{width:14px;height:14px;flex-shrink:0}.menu-toggle{width:30px;flex-shrink:0}}
 
 /* Edytor i publiczne opisy korzystają z tego samego formatowania treści. */
 .product-description-section{padding-bottom:64px}.rich-description{font-size:14px;line-height:1.9;overflow-wrap:anywhere;white-space:normal}
