@@ -43,7 +43,7 @@ class ContentController extends Controller {
    'gallery_order'=>['nullable','array'],'gallery_order.*'=>['string','distinct',Rule::in($item->gallery??[])],
    'remove_gallery'=>['nullable','array'],'remove_gallery.*'=>['string',Rule::in($item->gallery??[])],
   ];
-  if($product) $rules += ['size'=>['required','string','max:100'],'area'=>['nullable','string','max:150'],'price'=>['nullable','integer','min:0','max:100000000'],'full_price'=>['nullable','integer','min:0','max:100000000'],'equipment_text'=>['nullable','string','max:10000'],'is_featured'=>['nullable','boolean'],'base_includes'=>['nullable','string','max:10000'],'extra_options'=>['nullable','string','max:10000'],'transport_note'=>['nullable','string','max:3000']];
+  if($product) $rules += ['size'=>['nullable','string','max:100'],'area'=>['nullable','string','max:150'],'price'=>['nullable','integer','min:0','max:100000000'],'full_price'=>['nullable','integer','min:0','max:100000000'],'equipment_text'=>['nullable','string','max:10000'],'is_featured'=>['nullable','boolean'],'base_includes'=>['nullable','string','max:10000'],'extra_options'=>['nullable','string','max:10000'],'transport_note'=>['nullable','string','max:3000']];
   else $rules += ['product_id'=>['nullable',Rule::exists('products','id')->whereNull('deleted_at')],'location'=>['nullable','string','max:150'],'dimensions'=>['nullable','string','max:100'],'purpose'=>['nullable','string','max:200'],'equipment_details'=>['nullable','string','max:10000']];
   $rules += \App\Support\Seo::rules();
   $data=$request->validate($rules, ['required'=>'Uzupełnij pole :attribute.','unique'=>'Ten adres jest już zajęty.','image'=>'Wybierz poprawny plik graficzny.','mimes'=>'Dozwolone formaty: JPG, PNG i WebP.','max'=>'Przekroczono dozwolony rozmiar lub długość pola :attribute.','regex'=>'Adres może zawierać małe litery, cyfry i pojedyncze myślniki.']);
@@ -59,7 +59,7 @@ class ContentController extends Controller {
    $attributes=collect($data)->except(['image','gallery','remove_gallery','gallery_order','equipment_text'])->all();
    $attributes['seo_noindex']=$request->boolean('seo_noindex');
    $attributes['image']=$image;$attributes['gallery']=array_values(array_unique([...$gallery,$image]));$attributes['is_published']=$request->boolean('is_published');
-   if($product){$attributes['area']=$data['area']??'';$attributes['is_featured']=$request->boolean('is_featured');$attributes['label']=\App\Models\Category::findOrFail($data['category'])->name;$attributes['equipment']=array_values(array_filter(array_map('trim',preg_split('/\r\n|\r|\n/',$data['equipment_text']??''))));}
+   if($product){$attributes['size']=$data['size']??'';$attributes['area']=$data['area']??'';$attributes['is_featured']=$request->boolean('is_featured');$attributes['label']=\App\Models\Category::findOrFail($data['category'])->name;$attributes['equipment']=array_values(array_filter(array_map('trim',preg_split('/\r\n|\r|\n/',$data['equipment_text']??''))));}
    DB::transaction(fn()=>$item->fill($attributes)->save());
   } catch(Throwable $exception){Storage::disk('public')->delete($uploads);throw $exception;}
   return to_route('admin.content.edit',[$kind,$item->id])->with('success','Zapisano zmiany. '.($item->is_published?'Wpis jest opublikowany.':'Wpis jest szkicem.'));
