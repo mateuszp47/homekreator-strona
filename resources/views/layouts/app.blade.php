@@ -35,7 +35,7 @@
   <a href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>O nas</a>
   <a href="{{ route('contact') }}" @if(request()->routeIs('contact')) aria-current="page" @endif>Kontakt</a>
  </nav>
- <a class="btn btn-primary header-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>{{ config('homekreator.phone') }}</a>
+ <a class="btn btn-primary header-call" aria-label="Zadzwoń: {{ config('homekreator.phone') }}" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/>{{ config('homekreator.phone') }}</a>
 </div></header>
 <main id="main">@yield('content')</main>
 <footer class="site-footer"><div class="container footer-grid">
@@ -43,7 +43,7 @@
  <div><h2>Nasza oferta</h2>@foreach($catalog->categories() as $category)<a href="{{ route('offer',$category['slug']) }}">{{ $category['name'] }}</a>@endforeach</div>
  <div><h2>Warto wiedzieć</h2><a href="{{ route('projects') }}">Realizacje</a><a href="{{ route('delivery') }}">Transport i montaż</a><a href="{{ route('about') }}">O nas</a><a href="{{ route('contact') }}">Kontakt</a><a href="{{ route('privacy') }}">Polityka prywatności</a></div>
  <div><h2>Dane firmy</h2><p>{{ config('homekreator.company') }}<br>{{ config('homekreator.street') }}<br>{{ config('homekreator.postal_code') }} {{ config('homekreator.city') }}</p><a href="tel:{{ config('homekreator.secondary_phone_href') }}">{{ config('homekreator.secondary_phone') }}</a><a href="https://www.google.com/maps/search/?api=1&amp;query={{ rawurlencode(config('homekreator.address')) }}" target="_blank" rel="noopener">Wyznacz trasę ↗</a></div>
-</div><div class="container footer-bottom"><span>© {{ date('Y') }} Home Kreator. Wszelkie prawa zastrzeżone.</span><span>Domki modułowe · Pawilony sanitarne · Sauny</span></div></footer>
+</div><div class="container footer-bottom"><span>© {{ date('Y') }} Home Kreator. Wszelkie prawa zastrzeżone.</span><span>Domki modułowe · Pawilony sanitarne · Sauny</span><a class="site-credit" href="https://kobcode.com" target="_blank" rel="noopener noreferrer">Strona wykonana przez kobcode.com</a></div></footer>
 <a class="mobile-call" href="tel:{{ config('homekreator.phone_href') }}"><x-icon name="phone"/> Zadzwoń: {{ config('homekreator.phone') }}</a>
-<dialog id="lightbox" aria-label="Galeria zdjęć"><button data-close-lightbox aria-label="Zamknij zdjęcie">×</button><img alt=""><p></p></dialog>
+<dialog id="lightbox" aria-label="Galeria zdjęć"><button type="button" data-close-lightbox aria-label="Zamknij zdjęcie">×</button><div class="lightbox-stage"><img alt="" draggable="false"></div><div class="lightbox-controls"><button type="button" data-lightbox-prev aria-label="Poprzednie zdjęcie">←</button><span data-lightbox-counter aria-live="polite" aria-atomic="true"></span><button type="button" data-lightbox-next aria-label="Następne zdjęcie">→</button></div><p data-lightbox-caption></p></dialog>
 </body></html>
