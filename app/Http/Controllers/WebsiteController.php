@@ -12,7 +12,7 @@ class WebsiteController extends Controller
   $products=$this->catalog->products();
   if($selected) $products=$products->where('category',$selected['key']);
   $query=trim($validated['q']??'');
-  if($query!=='') $products=$products->filter(fn($p)=>mb_stripos($p['name'].' '.$p['description'].' '.$p['label'],$query)!==false);
+  if($query!=='') $products=$products->filter(fn($p)=>mb_stripos($p['name'].' '.\App\Support\FormattedDescription::text($p['description']).' '.$p['label'],$query)!==false);
   $sort=$validated['sort']??'default';
   if($sort==='price-asc') $products=$products->sortBy(fn($p)=>$p['price']??PHP_INT_MAX);
   elseif($sort==='price-desc') $products=$products->sortBy(fn($p)=>$p['price']===null?PHP_INT_MAX:-$p['price']);
