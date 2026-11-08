@@ -25,8 +25,8 @@ class ProductPresentationTest extends TestCase {
   $data=['name'=>$product->name,'slug'=>$product->slug,'category'=>$product->category,'description'=>"Pierwszy akapit.\nDrugi akapit.",'size'=>$product->size,'area'=>'','sort_order'=>0,'is_published'=>1];
   $this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();$this->assertSame('',$product->fresh()->area);
   $response=$this->get('/produkty/'.$product->slug)->assertOk()->assertDontSee('<dt>Przestrzeń</dt>',false);
-  $this->assertStringContainsString('<article class="product-description"><h2>Opis produktu</h2><p>',$response->getContent());
-  $response->assertSee("Pierwszy akapit.\nDrugi akapit.");
+  $this->assertStringContainsString('<article class="product-description"><h2>Opis produktu</h2><div class="rich-description"><p>',$response->getContent());
+  $response->assertSeeInOrder(['Pierwszy akapit.','Drugi akapit.']);
   $data['area']='24 m²';$this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();
   $this->get('/produkty/'.$product->slug)->assertOk()->assertSee('<dt>Przestrzeń</dt><dd>24 m²</dd>',false);
  }
