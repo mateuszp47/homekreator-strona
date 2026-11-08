@@ -47,6 +47,8 @@ class ContentController extends Controller {
   else $rules += ['product_id'=>['nullable',Rule::exists('products','id')->whereNull('deleted_at')],'location'=>['nullable','string','max:150'],'dimensions'=>['nullable','string','max:100'],'purpose'=>['nullable','string','max:200'],'equipment_details'=>['nullable','string','max:10000']];
   $rules += \App\Support\Seo::rules();
   $data=$request->validate($rules, ['required'=>'Uzupełnij pole :attribute.','unique'=>'Ten adres jest już zajęty.','image'=>'Wybierz poprawny plik graficzny.','mimes'=>'Dozwolone formaty: JPG, PNG i WebP.','max'=>'Przekroczono dozwolony rozmiar lub długość pola :attribute.','regex'=>'Adres może zawierać małe litery, cyfry i pojedyncze myślniki.']);
+  $data['description']=\App\Support\FormattedDescription::sanitize($data['description']);
+  if(\App\Support\FormattedDescription::text($data['description'])==='')throw \Illuminate\Validation\ValidationException::withMessages(['description'=>'Uzupełnij opis — samo puste formatowanie nie wystarczy.']);
   $uploads=[];
   try {
    $image=$item->image;
