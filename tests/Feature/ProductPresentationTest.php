@@ -18,7 +18,7 @@ class ProductPresentationTest extends TestCase {
   ])->assertSessionHasNoErrors()->assertRedirect();
   $product=Product::where('slug','produkt-bez-powierzchni')->firstOrFail();$this->assertSame('',$product->area);
   $this->get('/produkty/'.$product->slug)->assertOk()->assertDontSee('<dt>Przestrzeń</dt>',false)
-   ->assertSeeInOrder(['Możliwości i wyposażenie','Klimatyzacja','Aneks kuchenny','Co obejmuje oferta?']);
+   ->assertSeeInOrder(['<article class="product-description">','<h2>Opis produktu</h2>','<div class="container equipment-grid">','Możliwości i wyposażenie','Klimatyzacja','Aneks kuchenny','Co obejmuje oferta?'],false);
  }
  public function test_existing_area_can_be_cleared_and_description_stays_in_its_own_section(): void {
   $this->actingAs($this->admin());$product=Product::first();
