@@ -9,7 +9,7 @@ class Seo {
  ];}
  public static function metadata(array $data,string $title,string $description,string $image): array {return [
   'title'=>($data['meta_title']??null) ?: $title,
-  'description'=>($data['meta_description']??null) ?: \Illuminate\Support\Str::limit(strip_tags($description),160,''),
+  'description'=>($data['meta_description']??null) ?: \Illuminate\Support\Str::limit(FormattedDescription::text($description),160,''),
   'canonical'=>($data['canonical_url']??null) ?: url()->current(),
   'noindex'=>(bool)($data['seo_noindex']??false),
   'image'=>$image,
