@@ -19,3 +19,14 @@
 .product-description{grid-area:description;min-width:0}.product-description h2{font-size:23px;margin-bottom:18px}
 .product-description p{font-size:14px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:600px){.product-detail{grid-template-areas:"gallery" "summary" "description"}.product-description h2{font-size:22px}}
+
+/* Zdjęcia i miniatury nie rozszerzają kolumny poza ekran telefonu. */
+.product-detail{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"gallery summary"}
+.product-gallery,.product-summary{max-width:100%;min-width:0}.main-photo{display:block;max-width:100%;min-width:0}.main-photo img{display:block;max-width:100%}
+.product-summary h1{overflow-wrap:anywhere}.thumbnails{max-width:100%;min-width:0;overflow-x:auto;padding-bottom:6px;overscroll-behavior-x:contain}.thumbnails button{flex:0 0 88px}.thumbnails img{display:block;max-width:100%}
+#lightbox{box-sizing:border-box;overflow-y:auto;overflow-x:hidden}.lightbox-stage{max-width:100%;touch-action:pan-y pinch-zoom;user-select:none}.lightbox-stage img{display:block;max-width:100%;max-height:64vh;margin-inline:auto}
+.lightbox-controls{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:14px}.lightbox-controls[hidden]{display:none}.lightbox-controls button{position:static;display:grid;place-items:center;width:48px;height:44px;border:1px solid #ffffff70;border-radius:8px;background:#ffffff12;color:#fff;font-size:25px;cursor:pointer}.lightbox-controls button:hover{background:#ffffff25}.lightbox-controls span{min-width:55px;text-align:center;font-size:13px}.lightbox-controls button:focus-visible{outline:2px solid white;outline-offset:3px}
+.footer-bottom{flex-wrap:wrap;align-items:center}.site-credit{color:inherit;white-space:normal;overflow-wrap:anywhere}.site-credit:hover{text-decoration:underline}
+@media(max-width:900px){.product-detail{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:600px){.product-detail{grid-template-columns:minmax(0,1fr);grid-template-areas:"gallery" "summary"}.thumbnails button{flex-basis:74px}.footer-bottom>span:nth-child(2){display:none}.site-credit{display:block;flex-basis:100%}.lightbox-stage img{max-height:60vh}}
+@media(max-width:380px){.header-call{font-size:0;gap:0;padding:9px;min-width:38px}.header-call .icon{width:18px;height:18px;flex-shrink:0}}
