@@ -1,3 +1,4 @@
+import './html-editor.js';
 const toggle = document.querySelector('.menu-toggle');
 const nav = document.querySelector('#navigation');
 const dropdownButton = document.querySelector('.offer-nav-title button');
