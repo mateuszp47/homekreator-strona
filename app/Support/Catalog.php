@@ -13,6 +13,6 @@ class Catalog
   abort(404);
  }
  public function projects(): Collection { return \App\Models\Project::with('product')->whereIn('category',$this->categories()->keys())->where('is_published',true)->orderBy('sort_order')->orderBy('id')->get()->map(fn($p)=>$p->catalogData()); }
- public static function imageUrl(string $path): string { return str_starts_with($path,'catalog/') ? \Illuminate\Support\Facades\Storage::disk('public')->url($path) : asset('images/'.$path); }
+ public static function imageUrl(string $path): string { return str_starts_with($path,'catalog/') ? route('catalog.image', ['filename'=>basename($path)], false) : asset('images/'.$path); }
  public function contactAvailable(): bool { return config('homekreator.contact_enabled') && filter_var(config('homekreator.contact_recipient'),FILTER_VALIDATE_EMAIL) && in_array(config('mail.default'),['smtp','sendmail','ses','postmark','resend','mailgun'],true); }
 }

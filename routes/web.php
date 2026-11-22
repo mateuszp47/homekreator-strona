@@ -3,6 +3,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\WebsiteController;
 use App\Support\Catalog;
 use Illuminate\Support\Facades\Route;
+Route::get('/media/catalog/{filename}', \App\Http\Controllers\CatalogImageController::class)->where('filename','[a-zA-Z0-9_-]+\\.(?:webp|jpg|jpeg|png)')->name('catalog.image');
 Route::get('/',[WebsiteController::class,'home'])->name('home');
 Route::get('/oferta/{category?}',[WebsiteController::class,'offer'])->name('offer');
 Route::get('/produkty/{slug}',[WebsiteController::class,'product'])->name('product');

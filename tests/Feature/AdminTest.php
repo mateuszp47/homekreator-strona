@@ -39,7 +39,7 @@ class AdminTest extends TestCase {
   $product=Product::where('slug',$data['slug'])->firstOrFail();Storage::disk('public')->assertExists($product->image);
   $this->assertSame(['Łazienka','Kuchnia'],$product->equipment);$this->get('/produkty/'.$product->slug)->assertNotFound();
   unset($data['image']);$data['is_published']=1;$data['name']='Nowa nazwa produktu';
-  $this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();$this->get('/produkty/'.$product->slug)->assertOk()->assertSee('Nowa nazwa produktu')->assertSee('/storage/catalog/');
+  $this->put('/admin/produkty/'.$product->id,$data)->assertSessionHasNoErrors();$this->get('/produkty/'.$product->slug)->assertOk()->assertSee('Nowa nazwa produktu')->assertSee('/media/catalog/');
   $this->delete('/admin/produkty/'.$product->id)->assertRedirect();$this->get('/produkty/'.$product->slug)->assertNotFound();
   $this->post('/admin/produkty/'.$product->id.'/przywroc')->assertRedirect();$this->assertFalse($product->fresh()->is_published);$this->assertNull($product->fresh()->deleted_at);
  }

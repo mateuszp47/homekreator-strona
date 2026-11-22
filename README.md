@@ -152,3 +152,9 @@ Wdrożenie, limity hostingu, harmonogram kopii i przywracanie: **[docs/hosting-i
 W zakładce Archiwum produktów i realizacji jest przycisk „Usuń trwale”. Prowadzi do osobnej strony potwierdzenia. Usunięcie wymaga zaznaczenia pola potwierdzenia i jest blokowane po stronie serwera dla aktywnych oraz przywróconych wpisów. Powiązane realizacje pozostają po usunięciu produktu, ale tracą jego powiązanie. Pliki zdjęć pozostają ze względu na współdzielenie między wpisami. Import danych początkowych nie odtwarza wpisów trwale usuniętych z panelu. Wcześniejsze kopie zapasowe mogą nadal zawierać usunięte dane.
 
 Po pobraniu tej aktualizacji wykonaj `php artisan migrate` oraz `npm run build`.
+
+## Wyświetlanie wgranych zdjęć
+
+Zdjęcia produktów i realizacji są udostępniane przez `/media/catalog/{filename}` z dysku `public`. Adresy korzystają z bieżącej domeny, bez zależności od `APP_URL` i linku `public/storage`. Dotyczy to również istniejących zdjęć zapisanych w `storage/app/public/catalog`. Pliki nadal trzeba zachować przy wdrożeniu i uwzględniać w kopiach zapasowych. Pozostałe zasoby mogą nadal korzystać z `storage:link`.
+
+Po pobraniu poprawki wykonaj `php artisan optimize:clear`. Sprawdzenie zapisu i wyświetlania okładek oraz galerii obu sekcji: `php artisan test --filter=CatalogImagesTest`.
